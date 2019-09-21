@@ -12,7 +12,7 @@ $(function(){
           console.log(data.error);
         }
         if(data.success){
-          window.location.replace('/')
+          window.location.replace('/blog/home')
         }
       });
     event.preventDefault()

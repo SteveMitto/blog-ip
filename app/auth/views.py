@@ -2,6 +2,7 @@ from . import auth
 from flask import render_template,jsonify,redirect,url_for,request
 from werkzeug.security import check_password_hash
 from app.models import User
+from flask_login import login_user,logout_user
 @auth.route('/signup', methods=['POST','GET'])
 def signup():
     if request.method == "POST":
@@ -39,7 +40,13 @@ def login():
             return jsonify({'error':'fill all fields'})
         user = User.query.filter_by(username = username).first()
         if user != None and user.verify_password(password):
+            login_user(user)
             return jsonify({'success':True})
         else:
             return jsonify({'error':'Invalid Username or password'})
+    return render_template('auth/login.html')
+
+@auth.route('/logout')
+def logout():
+    logout_user()
     return render_template('auth/login.html')
