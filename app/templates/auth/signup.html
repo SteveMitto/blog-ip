@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+
+{% block content%}
+<script type="text/javascript" src="{{url_for('static', filename='js/signup.js')}}"></script>
+<div class="col-md-5 offset-md-4">
+
+  <form id="signup">
+    <div class="form-group">
+      <lable>Username</lable>
+      <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+      <small class="text-danger" style="display:none;" id="username_error"></small>
+    </div>
+    <div class="form-group">
+      <lable>Email</lable>
+      <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+      <small class="text-danger" style="display:none;" id="email_error"></small>
+    </div>
+    <div class="form-group">
+      <lable>Password</lable>
+      <input type="password" class="form-control" id="password" name="password">
+    </div>
+    <div class="form-group">
+      <lable>Confirm Password</lable>
+      <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+      <small class="text-danger" style="display:none;" id="password_error"></small>
+    </div>
+    <button type="submit" class="btn btn-warning btn-sm" name="button">Submit</button>
+  </form>
+</div>
+{% endblock %}
