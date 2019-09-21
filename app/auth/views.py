@@ -1,5 +1,6 @@
 from . import auth
 from flask import render_template,jsonify,redirect,url_for,request
+from werkzeug.security import check_password_hash
 from app.models import User
 @auth.route('/signup', methods=['POST','GET'])
 def signup():
@@ -27,3 +28,18 @@ def signup():
         else:
             return jsonify({'username_error':'Username aready taken'})
     return render_template('auth/signup.html')
+
+@auth.route('/login', methods=['POST','GET'])
+def login():
+    if request.method == "POST":
+        form = request.form
+        username = form.get('username')
+        password = form.get('password')
+        if username == None or password == None:
+            return jsonify({'error':'fill all fields'})
+        user = User.query.filter_by(username = username).first()
+        if user != None and user.verify_password(password):
+            return jsonify({'success':True})
+        else:
+            return jsonify({'error':'Invalid Username or password'})
+    return render_template('auth/login.html')

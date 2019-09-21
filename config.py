@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 load_dotenv()
 class Config(object):
     """Class for the parent Config."""
-
+    SECRET_KEY=os.environ.get('SECRET_KEY')
 class ProdConfig(Config):
     """Class for the parent Config."""
 

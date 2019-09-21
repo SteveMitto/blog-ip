@@ -1,9 +1,9 @@
 {% extends 'base.html'%}
 
 {% block content%}
-<script type="text/javascript" src="{{url_for('static', filename='js/signup.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/auth/signup.js')}}"></script>
 <div class="col-md-5 offset-md-4">
-
+  <h3>Sign Up</h3>
   <form id="signup">
     <div class="form-group">
       <lable>Username</lable>
@@ -26,5 +26,7 @@
     </div>
     <button type="submit" class="btn btn-warning btn-sm" name="button">Submit</button>
   </form>
+  <small>Have an accout ? <br><a href="/login">Login</a></small><br>
+
 </div>
 {% endblock %}

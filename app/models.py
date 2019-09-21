@@ -20,4 +20,4 @@ class User(db.Model):
         self.password = password_hash
 
     def verify_password(self,password):
-        return check_pasword_hash(self.password,password)
+        return check_password_hash(self.password,password)
