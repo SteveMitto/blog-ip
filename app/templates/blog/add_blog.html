@@ -1,0 +1,26 @@
+{% extends 'base.html'%}
+{% block content%}
+
+<script type="text/javascript" src="{{url_for('static', filename ='js/blog/add_blog.js')}}"></script>
+<div class="col-md-7">
+  <form id="add_post">
+    <small class="text-danger" id="errors"></small>
+  <div class="form-group">
+    <lable>Title</lable>
+    <input type="text" class="form-control" name="title" id="title" placeholder="Blog Title">
+    <small id="title_error" class="text-danger"></small>
+  </div>
+  <div class="form-group">
+    <lable for="file">Photo</lable>
+    <input type="file" class="" name="blog-img" id="blog_img">
+    <small id="img_error" class="text-danger"></small>
+  </div>
+  <div class="form-group">
+    <lable>Description</lable>
+    <textarea name="blog" id="blog" cols="30" rows="10" class="form-control" placeholder="Your Blog"></textarea>
+    <small id="blog_error" class="text-danger"></small>
+  </div>
+  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+  </form>
+</div>
+{% endblock %}
