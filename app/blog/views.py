@@ -1,7 +1,7 @@
 from . import blog
 from flask import render_template,jsonify,request,url_for,g
 from flask_login import login_required,current_user
-from app.models import Blog
+from app.models import Blog,Comment
 from app import photos
 user = current_user
 
@@ -39,7 +39,18 @@ def add_blog():
         blog.save()
         return jsonify({'success':'Your blog was posted'})
     return render_template('blog/add_blog.html')
-# title
-# blog_img
-# blog_content
-# user_id
+
+@blog.route('/blog/<blog_id>/details')
+def blog_details(blog_id):
+    blog =Blog.query.filter_by(id = blog_id).first()
+    return render_template('blog/blog_details.html',blog = blog)
+
+@blog.route('/blog/<blog_id>/save_comment', methods=['POST'])
+def save_comment(blog_id):
+    comment = request.form.get('comment')
+    print(comment)
+    if comment == '' or None:
+        return jsonify({'error':'Add a comment please'})
+    new_comment = Comment(comment = comment, user_id = user.id , blog_id = blog_id)
+    new_comment.save()
+    return jsonify({'success':'Your comment was added'})
