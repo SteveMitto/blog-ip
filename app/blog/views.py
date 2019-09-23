@@ -1,13 +1,14 @@
 from . import blog
 from flask import render_template,jsonify,request,url_for,redirect
 from flask_login import login_required,current_user
-from app.models import Blog,Comment,Upvote
+from app.models import Blog,Comment,Upvote,Quote
 from app import photos
 user = current_user
 
 @blog.route('/blog/home')
 @login_required
 def index():
+    
     blogs = Blog.query.all()
     return render_template('blog/index.html', blogs = blogs)
 
