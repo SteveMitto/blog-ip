@@ -108,3 +108,12 @@ def edit_blog(blog_id):
             blog_m.save()
             return jsonify({'success':True,'title':title,'blog':blog})
     return redirect(url_for('blog.blog_details', blog_id = blog_id))
+
+@blog.route('/blog/<blog_id>/delete')
+def delete_blog(blog_id):
+    blog = Blog.query.filter_by(id = blog_id ).first()
+    if user == blog.user:
+        blog.delete()
+        return redirect(url_for('blog.index'))
+    else:
+        abort(404)

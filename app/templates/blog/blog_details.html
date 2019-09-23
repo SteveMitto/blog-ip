@@ -47,7 +47,8 @@
   <p id="blog_content">{{blog.blog_content}}</p>
 </div>
 {% if blog.user == current_user%}
-<a id="edit" style="float:right;cursor:pointer"><small style="color:blue">edit <i class="fas fa-pen"></i> </small></a>
+<small id="edit" style="color:blue;float:right;cursor:pointer"> <i class="fas fa-pen"></i>edit </small><br><br>
+<a href="delete"><small style="color:red;float:right;cursor:pointer"> <i class="fas fa-trash"></i>delete </small></a>
 {% endif %}
 <div class="edit-form" style="display:none">
   <form id = "edit_comment">
