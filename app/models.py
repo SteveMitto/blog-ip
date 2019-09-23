@@ -114,3 +114,8 @@ class Downvote(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+class Quote:
+    def __init__(self,author,quote,link):
+         self.author = author
+         self.quote = quote
+         self.link = link 
