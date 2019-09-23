@@ -1,7 +1,47 @@
 {% extends 'base.html'%}
 
 {% block content %}
+<style media="screen">
+  .profile-p{
+    border-radius:50%;
+  }
+  .detail{
+    float:right
+  }
+</style>
 <h2> Welcome {{current_user.username}}</h2>
+<div class="container-fluid">
+  <div class="row">
 
+  {% if blogs %}
+  {% for blog in blogs %}
+  <div class="col-xm-1 col-sm-2 col-md-3 col-lg-3">
+
+  <div class="card">
+    <img src="{{url_for('static', filename=blog.blog_img)}}" alt="" class="card-img-top">
+    <br>
+    <div class="card-body">
+      <h4>{{blog.title}}</h4>{{blog.upvote[0] }}
+      <p>{{blog.blog_content | truncate(100) }}</p>
+      {% if blog.user.profile_photo %}
+      <img src="{{blog.user.profile_photo}}" alt="">
+      {% else %}
+      <img src="{{url_for('static', filename='photos/blog/def-prof.jpg')}}" class="profile-p"width="50px" height="50px" alt="">
+      {% endif %}
+        <small>{{blog.user.username}}</small><br>
+        <small> <strong> Posted on</strong> {{blog.pub_date}}</small>
+      <a class="detail" href="/blog/{{blog.id}}/details"><small>see more</small></a>
+    </div>
+
+  </div>
+</div>
+      {% endfor %}
+      {% else %}
+      <h2>No one has posted a blog</h2>
+      {% endif %}
+    </div>
+  </div>
+
+<br><br>
 <a  class="btn btn-sm btn-primary" href="/blog/add_blog">Add Blog</a>
 {% endblock %}

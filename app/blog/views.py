@@ -8,7 +8,8 @@ user = current_user
 @blog.route('/blog/home')
 @login_required
 def index():
-    return render_template('blog/index.html')
+    blogs = Blog.query.all()
+    return render_template('blog/index.html', blogs = blogs)
 
 @blog.route('/blog/add_blog', methods=['POST','GET'])
 @login_required
@@ -34,8 +35,8 @@ def add_blog():
             print(blog_img)
         except Exception as e:
             blog_img= 'photos/blog/default.jpeg'
-        # blog = Blog(title = title, blog_img = blog_img, blog_content = blog_content,user_id =user.id )
-        # blog.save()
+        blog = Blog(title = title, blog_img = blog_img, blog_content = blog_content,user_id =user.id )
+        blog.save()
         return jsonify({'success':'Your blog was posted'})
     return render_template('blog/add_blog.html')
 # title
