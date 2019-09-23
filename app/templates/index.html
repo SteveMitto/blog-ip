@@ -1,6 +1,36 @@
 {% extends 'base.html'%}
 
 {% block content %}
-<h2>Home</h2>
-<a href="/signup">Sign up</a>
+<style media="screen">
+  .bg{
+    background-image:url("{{url_for('static', filename = 'bg-quote.jpeg')}}");
+    height:50vh;
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center;
+    padding:0;
+  }
+  .quote{
+    background-color:rgba(0,0,0,.7);
+    z-index:20;
+    height:100%;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:white;
+  }
+</style>
+<div class="container-fluid bg">
+<div class="quote">
+  {% if quote %}
+  <h3>{{quote.quote}}</h3>
+  <small>{{quote .author}}</small>
+  {% else %}
+  <h4>"For God loved the world in this way: so much that he would give up his Son, The Only One, so that everyone who trusts in him shall not be lost, but he shall have eternal life."</h4>
+  <small><strong>John 3:16</strong></small>
+  {% endif %}
+</div>
+</div>
 {% endblock %}
