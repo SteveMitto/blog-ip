@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<style media="screen">
+  .image{
+    height:100vh;
+    background-image:url('{{url_for('static' , filename=blog.blog_img)}}');
+    background-repeat:no-repeat;
+    background-size:cover;
+    position:fixed;
+    right:0;
+  }
+  .profile-p{
+    border-radius:50%;
+  }
+</style>
+<script type="text/javascript" src="{{url_for('static', filename='js/blog/blog_details.js')}}"></script>
+<div class="container-fluid">
+<div class="row">
+  <div class="col-md-6">
+  <br><br>
+  <h3>{{blog.title}}</h3>
+  <br><br>
+  <p>{{blog.blog_content}}</p>
+  <small><strong>Published on</strong> {{blog.pub_date}}</small><br>
+  {% if blog.user.profile_photo %}
+  <img src="{{url_for('static' , filename=blog.user.profile_photo)}}"  width="100px" height="100px" alt="">
+  {% else %}
+  <img src="{{url_for('static', filename='photos/blog/def-prof.jpg')}}" class="profile-p" width="70px" height="70px" alt="">
+  {% endif%}
+  <small><strong>Author</strong> {{blog.user.username}}</small><br>
+  <form id="add_comment">
+    <div class="form-group">
+      <lable> <strong>Comment</strong></lable>
+      <textarea name="comment" id="comment" cols="30" rows="5" class="form-control"></textarea>
+      <input type="hidden" id="blog_id" name="blog_id" value="{{blog.id}}">
+      <button class="btn btn-primary btn-block btn-sm">Comment</button>
+    </div>
+  </form>
+  <div class="container-fluid">
+    {% if blog.comment %}
+    {% for comment in blog.comment %}
+    <div class="row">
+      <div class="col-md-2">
+        {% if comment.user.profile_photo %}
+        <img src="{{url_for('static' , filename=blog.user.profile_photo)}}"  width="100px" height="100px" alt="">
+        {% else %}
+        <img src="{{url_for('static', filename='photos/blog/def-prof.jpg')}}" class="profile-p" width="50px" height="50px" alt="">
+        {% endif%}
+      </div>
+      <div class="col-md-10">
+        <p>{{comment.comment}}</p>
+        <small>{{comment.user.username}}</small>
+        {% if current_user == blog.user%}
+        <a href="#" style="float:right">
+          <small>
+            <i class="fas fa-trash"></i>
+          </small>
+        </a>
+      </div>
+    </div>
+      {% endif %}
+    {% endfor %}
+    {% else %}
+    <h6>Waiting for your comment😃</h6>
+    {% endif%}
+  </div>
+  </div>
+  <div class="col-md-6 image " >
+  <p></p>
+  </div>
+</div>
+</div>
+
+{% endblock %}
