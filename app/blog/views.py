@@ -8,7 +8,7 @@ user = current_user
 @blog.route('/blog/home')
 @login_required
 def index():
-    
+
     blogs = Blog.query.all()
     return render_template('blog/index.html', blogs = blogs)
 
@@ -92,3 +92,19 @@ def upvote(blog_id):
             return jsonify({'success':True})
         except Exception:
             return jsonify({'success':False})
+
+@blog.route('/blog/edit/<blog_id>', methods=['POST','GET'])
+def edit_blog(blog_id):
+    blog_m = Blog.query.filter_by(id = blog_id).first()
+
+    if blog_m == None:
+        return redirect(url_for('blog.blog_details', blog_id = blog_id))
+    else:
+            form = request.form
+            title = form.get('title')
+            blog = form.get('blog')
+            blog_m.title= title
+            blog_m.blog_content = blog
+            blog_m.save()
+            return jsonify({'success':True,'title':title,'blog':blog})
+    return redirect(url_for('blog.blog_details', blog_id = blog_id))

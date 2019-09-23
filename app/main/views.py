@@ -5,12 +5,15 @@ import requests
 from flask_login import login_required
 @main.route('/')
 def index():
-    request = requests.get('http://quotes.stormconsultancy.co.uk/random.json')
-    res_json = request.json()
-    author = res_json.get('author')
-    quote = res_json.get('quote')
-    link = res_json.get('permalink')
-    quote = Quote(author,quote,link)
+    try:
+        request = requests.get('http://quotes.stormconsultancy.co.uk/random.json')
+        res_json = request.json()
+        author = res_json.get('author')
+        quote = res_json.get('quote')
+        link = res_json.get('permalink')
+        quote = Quote(author,quote,link)
+    except Exception:
+        quote = None
     return render_template('index.html',quote= quote)
 
 @main.route('/contact-us')

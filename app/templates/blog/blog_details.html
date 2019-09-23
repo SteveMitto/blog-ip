@@ -40,9 +40,32 @@
 <div class="row">
   <div class="col-md-6 details">
   <br><br>
-  <h3>{{blog.title}}</h3>
+
+<div class="all">
+  <h3 id="blog_title">{{blog.title}}</h3>
   <br><br>
-  <p>{{blog.blog_content}}</p>
+  <p id="blog_content">{{blog.blog_content}}</p>
+</div>
+{% if blog.user == current_user%}
+<a id="edit" style="float:right;cursor:pointer"><small style="color:blue">edit <i class="fas fa-pen"></i> </small></a>
+{% endif %}
+<div class="edit-form" style="display:none">
+  <form id = "edit_comment">
+    <!-- <form id = "edit_comment" method='post' action="/blog/edit/{{blog.id}}"> -->
+    <small class="text-danger" id="errors"></small>
+  <div class="form-group">
+    <lable>Title</lable>
+    <input type="text" class="form-control" name="title" id="title" value="{{blog.title}}" placeholder="Blog Title">
+    <small id="title_error" class="text-danger"></small>
+  </div>
+  <div class="form-group">
+    <lable>Description</lable>
+    <textarea name="blog" id="blog" value="dkasjhdkja" cols="30" rows="5" class="form-control" placeholder="" ></textarea>
+    <small id="blog_error" class="text-danger"></small>
+  </div>
+  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+  </form>
+</div>
   <small><strong>Published on</strong> {{blog.pub_date}}</small><br>
   {% if blog.user.profile_photo %}
   <img src="{{url_for('static' , filename=blog.user.profile_photo)}}"  width="100px" height="100px" alt="">

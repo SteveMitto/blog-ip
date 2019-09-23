@@ -1,5 +1,7 @@
 $(document).ready(function(){
-
+  $('#edit').click(function(){
+    $('.edit-form').slideToggle(1000)
+  })
   // $.ajax({
   //   url:'postgresql+psycopg2://stevemitto:p@127.0.0.1:5000/blog',
   //   success:function(data){
@@ -18,7 +20,7 @@ $(document).ready(function(){
       if(data.success){
         console.log(data)
         $(".comments").append(
-        '  <div class="row" id="comment'+data.id+'>'+
+        ' <div class="row" id="comment'+data.id+'>'+
             '<div class="col-md-2">'+
               // '{% if comment.user.profile_photo %}'+
               // '<img src="{{url_for("static" , filename=blog.user.profile_photo)}}"  width="100px" height="100px" alt="">'+
@@ -66,6 +68,23 @@ $(document).ready(function(){
         });
       });
   });
+  $("#edit_comment").submit(function(event){
+    $.post('/blog/edit/'+$('#blog_id').val(),
+    {
+      title:$("#title").val(),
+      blog:$("#blog").val()
+    },
+    function(data){
+      if (data.success){
+        console.log("submited");
+        console.log(data);
+        $('.edit-form').slideUp()
+        $("#blog_title").text(data.title).fadeIn(500)
+        $("#blog_content").text(data.blog).fadeIn(500)
+      }
+    });
+    event.preventDefault()
+  })
 
   $("#upvote").click(function(){
 
