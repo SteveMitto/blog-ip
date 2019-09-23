@@ -11,14 +11,28 @@
     position:fixed;
     right:0;
   }
+  .details{
+    padding:20px 70px
+  }
+  .details p{
+    font-style:italic;
+    text-align:justify;
+    line-height:30px;
+  }
   .profile-p{
     border-radius:50%;
+  }
+  .fa-trash{
+    transition:.5s;
+  }
+  .fa-trash:hover{
+    color:red;
   }
 </style>
 <script type="text/javascript" src="{{url_for('static', filename='js/blog/blog_details.js')}}"></script>
 <div class="container-fluid">
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 details">
   <br><br>
   <h3>{{blog.title}}</h3>
   <br><br>
@@ -33,15 +47,15 @@
   <form id="add_comment">
     <div class="form-group">
       <lable> <strong>Comment</strong></lable>
-      <textarea name="comment" id="comment" cols="30" rows="5" class="form-control"></textarea>
-      <input type="hidden" id="blog_id" name="blog_id" value="{{blog.id}}">
+      <textarea name="comment" id="comment" cols="30" rows="5" class="form-control" required></textarea>
+      <input type="hidden" id="blog_id" name="blog_id" value="{{blog.id}}" required>
       <button class="btn btn-primary btn-block btn-sm">Comment</button>
     </div>
   </form>
   <div class="container-fluid">
     {% if blog.comment %}
     {% for comment in blog.comment %}
-    <div class="row">
+    <div class="row" id="comment{{comment.id}}">
       <div class="col-md-2">
         {% if comment.user.profile_photo %}
         <img src="{{url_for('static' , filename=blog.user.profile_photo)}}"  width="100px" height="100px" alt="">
@@ -53,11 +67,16 @@
         <p>{{comment.comment}}</p>
         <small>{{comment.user.username}}</small>
         {% if current_user == blog.user%}
-        <a href="#" style="float:right">
-          <small>
+
+          <!-- <small class="delete" style="float:right;cursor:pointer;">
             <i class="fas fa-trash"></i>
-          </small>
-        </a>
+            <input type="hidden" class="comment_id"name="" value="{{comment.id}}">
+          </small> -->
+      <a href="/blog/{{blog.id}}/delete/{{comment.id}}/comment">
+        <small class="delete" style="float:right;cursor:pointer;">
+          <i class="fas fa-trash"></i>
+        </small>
+      </a>
       </div>
     </div>
       {% endif %}
