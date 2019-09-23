@@ -10,9 +10,12 @@
     background-size:cover;
     position:fixed;
     right:0;
+    z-index:-30;
   }
   .details{
-    padding:20px 70px
+    padding:20px 70px;
+    z-index:10;
+    background-color:white;
   }
   .details p{
     font-style:italic;
@@ -27,6 +30,9 @@
   }
   .fa-trash:hover{
     color:red;
+  }
+  .fas{
+    margin: 0 10px 10px 0
   }
 </style>
 <script type="text/javascript" src="{{url_for('static', filename='js/blog/blog_details.js')}}"></script>
@@ -44,6 +50,18 @@
   <img src="{{url_for('static', filename='photos/blog/def-prof.jpg')}}" class="profile-p" width="70px" height="70px" alt="">
   {% endif%}
   <small><strong>Author</strong> {{blog.user.username}}</small><br>
+  {% if upvotes %}
+  {% for upvote in upvotes%}
+    {% if upvote.blog_id == blog.id%}
+  <!-- <p>{{ blog.upvote.id | count}}</p> -->
+  {% endif %}
+  {% endfor %}
+  {%else %}
+  {% endif %}
+
+  <small id="upvote"> <i class="fas fa-thumbs-up">{{upvotes | count }} Like</i> </small>
+  <small id="downvote"> <i class="fas fa-thumbs-down">Dislike</i> </small>
+
   <form id="add_comment">
     <div class="form-group">
       <lable> <strong>Comment</strong></lable>
@@ -52,7 +70,7 @@
       <button class="btn btn-primary btn-block btn-sm">Comment</button>
     </div>
   </form>
-  <div class="container-fluid">
+  <div class="container-fluid comments">
     {% if blog.comment %}
     {% for comment in blog.comment %}
     <div class="row" id="comment{{comment.id}}">
@@ -68,18 +86,18 @@
         <small>{{comment.user.username}}</small>
         {% if current_user == blog.user%}
 
-          <!-- <small class="delete" style="float:right;cursor:pointer;">
+          <small class="delete" style="float:right;cursor:pointer;">
             <i class="fas fa-trash"></i>
             <input type="hidden" class="comment_id"name="" value="{{comment.id}}">
-          </small> -->
-      <a href="/blog/{{blog.id}}/delete/{{comment.id}}/comment">
+          </small>
+      <!-- <a href="/blog/{{blog.id}}/delete/{{comment.id}}/comment">
         <small class="delete" style="float:right;cursor:pointer;">
           <i class="fas fa-trash"></i>
         </small>
-      </a>
+      </a> -->
+      {% endif %}
       </div>
     </div>
-      {% endif %}
     {% endfor %}
     {% else %}
     <h6>Waiting for your comment😃</h6>

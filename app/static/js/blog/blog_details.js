@@ -1,4 +1,11 @@
 $(document).ready(function(){
+
+  // $.ajax({
+  //   url:'postgresql+psycopg2://stevemitto:p@127.0.0.1:5000/blog',
+  //   success:function(data){
+  //     console.log(data);
+  //   }
+  // });
   $("#add_comment").submit(function(event){
     $.post('/blog/'+ $("#blog_id").val()+'/save_comment',
     {
@@ -9,7 +16,27 @@ $(document).ready(function(){
         console.log(data.error)
       }
       if(data.success){
-        console.log(data.success)
+        console.log(data)
+        $(".comments").append(
+        '  <div class="row" id="comment'+data.id+'>'+
+            '<div class="col-md-2">'+
+              // '{% if comment.user.profile_photo %}'+
+              // '<img src="{{url_for("static" , filename=blog.user.profile_photo)}}"  width="100px" height="100px" alt="">'+
+              // '{% else %}'+
+              '<img src="static/photos/blog/def-prof.jpg" class="profile-p" width="50px" height="50px" alt=">'+
+              // '{% endif%}'+
+            '</div>'+
+            '<div class="col-md-10">'+
+              '<p>'+data.comment+'</p>'+
+              '<small>'+data.username+'</small>'+
+            '<a href="/blog/'+data.blog_id+'/delete/'+data.id+'/comment">'+
+              '<small class="delete" style="float:right;cursor:pointer;">'+
+                '<i class="fas fa-trash"></i>'+
+              '</small>'+
+            '</a>'+
+            '</div>'+
+          '</div>'
+        )
       }
     }
 
@@ -19,20 +46,39 @@ $(document).ready(function(){
     console.log($("#comment").val());
     event.preventDefault()
   });
-  $(".delete").click(function(){
-    console.log('clicked');
-    console.log($(".delete").children(".comment_id") .val());
-    // console.log(".delete"+$("#comment_id").val()+"");
-    // $.get('/blog/'+ $("#blog_id").val()+'/delete/'+ $("#comment_id").val()+'/comment',
-    //   function(data){
-    //     if(data.error){
-    //       console.log(data.error);
-    //     }
-    //     if(data.success){
-    //       $("#comment",$("#comment_id").val()).fadeOut(1000)
-    //       console.log(data.success);
-    //       $("#comment"+$('#comment_id').val()+"").slideUp(1000)
-    //     }
-    //   });
+  $(".delete").each(function(){
+      $(this).click(function(){
+      console.log('clicked');
+      console.log($(".delete").children(".comment_id") .val());
+      console.log(".delete"+$(".comment_id").val()+"");
+      $.get('/blog/'+ $("#blog_id").val()+'/delete/'+ $(".comment_id").val()+'/comment',
+        function(data){
+          if(data.error){
+            console.log(data.error);
+          }
+          if(data.success){
+            console.log(data.success+"This one");
+            // $("#comment"+$(".comment_id").val()+"").fadeOut(1000)
+             $("#comment"+$(".comment_id").val()+"").slideUp(100)
+
+            // $("#comment"+$('.comment_id').val()+"").slideUp(1000)
+          }
+        });
+      });
+  });
+
+  $("#upvote").click(function(){
+
+    $.get('/blog/'+ $("#blog_id").val()+'/upvote',
+    function(data){
+      if(data.success){
+        $("#upvote").css('color','blue')
+        console.log("success");
+      }
+      if(data.remove){
+        $("#upvote").css('color','black')
+        console.log("remove");
+      }
+    });
   });
 });

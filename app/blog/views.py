@@ -1,7 +1,7 @@
 from . import blog
 from flask import render_template,jsonify,request,url_for,redirect
 from flask_login import login_required,current_user
-from app.models import Blog,Comment
+from app.models import Blog,Comment,Upvote
 from app import photos
 user = current_user
 
@@ -42,8 +42,9 @@ def add_blog():
 
 @blog.route('/blog/<blog_id>/details')
 def blog_details(blog_id):
+    upvotes = Upvote.query.filter_by(blog_id =blog_id).all()
     blog =Blog.query.filter_by(id = blog_id).first()
-    return render_template('blog/blog_details.html',blog = blog)
+    return render_template('blog/blog_details.html',blog = blog,upvotes=upvotes)
 
 @blog.route('/blog/<blog_id>/save_comment', methods=['POST'])
 def save_comment(blog_id):
@@ -53,7 +54,14 @@ def save_comment(blog_id):
         return jsonify({'error':'Add a comment please'})
     new_comment = Comment(comment = comment, user_id = user.id , blog_id = blog_id)
     new_comment.save()
-    return jsonify({'success':'Your comment was added'})
+    comment_id = Comment.query.filter_by(comment = comment, user_id = user.id , blog_id = blog_id).first()
+    return jsonify({
+        'success':'Your comment was added',
+        'comment':comment,
+        'username':user.username,
+        'id':comment_id.id,
+        'blog_id':blog_id
+        })
 
 @blog.route('/blog/<blog_id>/delete/<comment_id>/comment')
 def delete_comment(comment_id,blog_id):
@@ -64,8 +72,22 @@ def delete_comment(comment_id,blog_id):
             return jsonify({'error':'sorry that comment was already deleted'})
         else:
             comment.delete()
-            # return jsonify({'success':'Comment deleted'})
+            return jsonify({'success':'Comment deleted'})
             return redirect(url_for('blog.blog_details',blog_id = blog_id))
 
     else:
         abort(404)
+
+@blog.route('/blog/<blog_id>/upvote')
+def upvote(blog_id):
+    upvote = Upvote.query.filter_by(user_id = user.id, blog_id=blog_id).first()
+    if upvote != None:
+        upvote.delete()
+        return jsonify({'remove':True})
+    else:
+        upvote = Upvote(vote = True,user_id =user.id,blog_id =  blog_id)
+        try:
+            upvote.save()
+            return jsonify({'success':True})
+        except Exception:
+            return jsonify({'success':False})
