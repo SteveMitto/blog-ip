@@ -1,7 +1,7 @@
 from . import blog
 from flask import render_template,jsonify,request,url_for,redirect
 from flask_login import login_required,current_user
-from app.models import Blog,Comment,Upvote,Quote
+from app.models import Blog,Comment,Upvote,Quote,StrangeComment
 from app import photos
 user = current_user
 
@@ -116,3 +116,19 @@ def delete_blog(blog_id):
         return redirect(url_for('blog.index'))
     else:
         abort(404)
+
+@blog.route('/blog/stranger/comment/<blog_id>', methods=['POST','GET'])
+def strange_c(blog_id):
+    if request.method == "POST":
+        form = request.form
+        name =form.get('name')
+        comment = form.get('comment')
+        new_comm = StrangeComment(name = name, comment= comment,blog_id = blog_id)
+        new_comm.save()
+    return redirect(url_for('blog.blog_details', blog_id = blog_id))
+
+@blog.route('/blog/<blog_id>/delete/stranger/<comment_id>/comment')
+def delete_strange_comment(comment_id,blog_id):
+    comment= StrangeComment.query.filter_by(id =comment_id).first()
+    comment.delete()
+    return redirect(url_for('blog.blog_details', blog_id = blog_id))

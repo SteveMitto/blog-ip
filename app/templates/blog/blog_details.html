@@ -89,7 +89,7 @@
   {% endif %}
 
   <small > <i class="fas fa-thumbs-up" id="upvote">{{upvotes | count }} </i>Like </small>
-
+  {% if current_user.is_authenticated %}
   <form id="add_comment">
     <div class="form-group">
       <lable> <strong>Comment</strong></lable>
@@ -98,13 +98,28 @@
       <button class="btn btn-primary btn-block btn-sm">Comment</button>
     </div>
   </form>
-  <div class="container-fluid comments">
+  {% else %}
+  <form id="strange_comment" method='post' action="/blog/stranger/comment/{{blog.id}}">
+    <div class="form-group">
+      <label for="">Name</label>
+      <input type="text" name="name" class="form-control">
+    </div>
+    <div class="form-group">
+      <lable> <strong>Comment</strong></lable>
+      <input class="form-control" type="text" name="comment" value="">
+    </div>
+    <button class="btn btn-primary btn-block btn-sm">Comment</button>
+  </form>
+  {% endif %}
 
-    <ul id="all-comments">
+  <h5>Comments</h5>
+  <small id="writers_comments" style="cursor:pointer;color:blue;">writers <i class="fas fa-comment"></i>  </small>
+  <small id="users_comments" style="cursor:pointer;color:blue;">users <i class="fas fa-comment"></i>  </small>
+  <div class="container-fluid w-comments">
+
 
     {% if blog.comment %}
     {% for comment in blog.comment %}
-    <li>
     <input type="hidden" name="delete-url" id="delete-url" value="/blog/{{blog.id}}/delete/{{comment.id}}/comment">
     <div class="row" id="comment{{comment.id}}">
       <div class="col-md-2">
@@ -130,12 +145,27 @@
       {% endif %}
       </div>
     </div>
-  </li>
     {% endfor %}
-  </ul>
     {% else %}
     <h6>Waiting for your comment😃</h6>
     {% endif%}
+  </div>
+  <div class="container-fluid u-comments" style="display:none">
+    {% if blog.strange_c %}
+    {% for comment in blog.strange_c %}
+    <p>{{comment.comment}}</p>
+    <small>By {{comment.name}}</small>
+    {% if current_user == blog.user%}
+  <a href="/blog/{{blog.id}}/delete/stranger/{{comment.id}}/comment">
+    <small class="delete" style="float:right;cursor:pointer;">
+      <i class="fas fa-trash"></i>
+    </small>
+  </a>
+  {% endif %}
+    {% endfor %}
+    {% else %}
+    <small>Nothing to see</small>
+    {% endif %}
   </div>
   </div>
 

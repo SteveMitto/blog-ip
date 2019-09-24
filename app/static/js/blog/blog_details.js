@@ -2,6 +2,14 @@ $(document).ready(function(){
   $('#edit').click(function(){
     $('.edit-form').slideToggle(1000)
   })
+  $("#users_comments").click(function(){
+    $('.w-comments').hide()
+    $('.u-comments').slideDown(500)
+  })
+  $("#writers_comments").click(function(){
+    $('.u-comments').hide()
+    $('.w-comments').slideDown(500)
+  })
   // $.ajax({
   //   url:'postgresql+psycopg2://stevemitto:p@127.0.0.1:5000/blog',
   //   success:function(data){

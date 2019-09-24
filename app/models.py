@@ -46,6 +46,7 @@ class Blog(db.Model):
     comment = db.relationship('Comment', backref='blog' , lazy = 'dynamic')
     upvote = db.relationship('Upvote', backref= 'blog', lazy='dynamic')
     downvote = db.relationship('Downvote', backref='blog', lazy = 'dynamic')
+    strange_c = db.relationship('StrangeComment', backref='blog', lazy = 'dynamic')
     # hash_tags = db.relationship('Hashtag', backref='blog', lazy = 'dynamic')
 
     def save(self):
@@ -71,6 +72,19 @@ class Comment(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+class StrangeComment(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(255), nullable = False)
+    comment = db.Column(db.Text, nullable = False)
+    blog_id = db.Column(db.Integer,db.ForeignKey('blogs.id'), nullable = False)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 # class Hashtag(db.Model):
 #     __tablename__ = 'hashtags'
 #     id= db.Column(db.Integer,primary_key = True)
@@ -118,4 +132,4 @@ class Quote:
     def __init__(self,author,quote,link):
          self.author = author
          self.quote = quote
-         self.link = link 
+         self.link = link
