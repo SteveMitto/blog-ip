@@ -1,7 +1,7 @@
 from . import blog
 from flask import render_template,jsonify,request,url_for,redirect
 from flask_login import login_required,current_user
-from app.models import Blog,Comment,Upvote,Quote,StrangeComment
+from app.models import Blog,Comment,Upvote,Quote,StrangeComment,User
 from app import photos
 user = current_user
 
@@ -132,3 +132,24 @@ def delete_strange_comment(comment_id,blog_id):
     comment= StrangeComment.query.filter_by(id =comment_id).first()
     comment.delete()
     return redirect(url_for('blog.blog_details', blog_id = blog_id))
+
+@blog.route('/profile', methods=['POST','GET'])
+def profile():
+    if current_user.is_authenticated:
+        blogs = Blog.query.filter_by(user_id = user.id).all()
+        return render_template('profile.html',user=user)
+    else:
+        abort(404)
+
+@blog.route('/profile/save/profile-photo/<int:uid>', methods=['POST','GET'])
+@login_required
+def save_photo(uid):
+    if 'profile' in request.files:
+        filename = photos.save(request.files['profile'])
+        path =  f'photos/blog/{filename}'
+        user = User.query.filter_by(id = uid).first()
+        if user != None:
+            user.profile_photo = path
+            user.save()
+            return redirect(url_for('blog.profile'))
+    return redirect(url_for('blog.profile'))
