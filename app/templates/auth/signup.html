@@ -2,7 +2,24 @@
 
 {% block content%}
 <script type="text/javascript" src="{{url_for('static', filename='js/auth/signup.js')}}"></script>
-<div class="col-md-5 offset-md-4">
+<style media="screen">
+  body{
+    background-image:url("{{url_for('static', filename='bg-quote.jpeg')}}");
+    background-repeat:no-repeat;
+    background-size:cover;
+  }
+  .all{
+    height:70vh;
+    width:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+</style>
+<div class="all">
+
+<div class="col-md-7">
   <h3>Sign Up</h3>
   <form id="signup">
     <div class="form-group">
@@ -24,9 +41,13 @@
       <input type="password" class="form-control" id="confirm_password" name="confirm_password">
       <small class="text-danger" style="display:none;" id="password_error"></small>
     </div>
-    <button type="submit" class="btn btn-warning btn-sm" name="button">Submit</button>
+    <button type="submit" class="btn btn-block btn-primary btn-sm" name="button">Submit</button>
   </form>
-  <small>Have an accout ? <br><a href="/login">Login</a></small><br>
+  <div class="" style="text-align:center">
 
+    <small>Have an accout ? <br><a href="/login">Login</a></small><br>
+  </div>
+
+</div>
 </div>
 {% endblock %}

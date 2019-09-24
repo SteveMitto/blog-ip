@@ -36,7 +36,9 @@ def add_blog():
             blog_img= 'photos/blog/default.jpeg'
         blog = Blog(title = title, blog_img = blog_img, blog_content = blog_content,user_id =user.id )
         blog.save()
-        return jsonify({'success':'Your blog was posted'})
+        blog = Blog.query.filter_by(title = title).first()
+        return redirect(url_for('blog.blog_details',blog_id =blog.id))
+        # return jsonify({'success':'Your blog was posted','id':blog.id})
     return render_template('blog/add_blog.html')
 
 @blog.route('/blog/<blog_id>/details')

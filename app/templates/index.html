@@ -36,6 +36,9 @@
     display:flex;
     align-items:center;
   }
+  .card-body{
+    padding:20px 0;
+  }
   .card-body h5{
     font-weight:lighter;
     margin-bottom:7px;
@@ -67,25 +70,28 @@
 <div class="container ">
   <div class="row ">
     {% for blog in blogs %}
-    <div class="col-md-3 col-lg-4 main2">
+    <div class="col-sm-6 col-md-6 col-lg-4 main2">
 
     <div class="card">
       <div class="row top" style="height:200px;background-image:url('{{url_for('static', filename=blog.blog_img)}}')">
-      <div class="col-md-3" style="display:flex;align-items:flex-end;padding:7px;">
-        {% if blog.user.profile_photo %}
-        <img src="{{url_for('static' , filename=blog.user.profile_photo)}}" class="profile-p" width="50px" height="50px" alt="">
-        {% else %}
-        <img src="{{url_for('static', filename='photos/blog/def-prof.jpg')}}" class="profile-p" width="50px" height="50px" alt="">
-        {% endif%}
-      </div>
-        <div class="col-md-9" style="display:flex;align-items:flex-end;padding:7px;">
 
-          <h6>{{blog.user.username}}</h6>
-        </div>
     </div>
       <div class="card-body">
         <h5><strong>{{blog.title}}</strong></h5>
         <small>{{blog.blog_content | truncate(200)}}</small>
+      </div>
+      <div class="row">
+        <div class="col-md-3" style="display:flex;align-items:flex-end;padding:7px;">
+          {% if blog.user.profile_photo %}
+          <img src="{{url_for('static' , filename=blog.user.profile_photo)}}" class="profile-p" width="50px" height="50px" alt="">
+          {% else %}
+          <img src="{{url_for('static', filename='photos/blog/def-prof.jpg')}}" class="profile-p" width="50px" height="50px" alt="">
+          {% endif%}
+        </div>
+          <div class="col-md-9" style="display:flex;align-items:flex-end;padding:7px;">
+
+            <h6>{{blog.user.username}}</h6>
+          </div>
       </div>
       <div class="card-footer">
         {% if blog.upvote.count() != 0 %}
