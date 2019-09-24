@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="col-md-9">
+  <div class="row">
+    <div class="col-md-6 card" style="border:none">
+      {% if user.profile_photo %}
+      <img src="{{url_for('static', filename = user.profile_photo)}}" class="card-img-top img-responsive" alt="profile photo">
+      <form  action="/profile/save/profile-photo/{{user.id}}" method="post" enctype="multipart/form-data">
+        <input type="file" name="profile" class=" form-control btn btn-sm btn-outline-success" placeholder="change-photo" >
+        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+      </form>
+      {% else %}
+      <img src="{{url_for('static', filename = 'photos/blog/def-prof.jpg')}}" class="card-img-top img-responsive" alt="profile photo">
+      <form  action="/profile/save/profile-photo/{{user.id}}" method="post" enctype="multipart/form-data">
+        <input type="file" name="profile" class=" form-control btn btn-sm btn-outline-success" placeholder="change-photo" >
+        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+      </form>
+      {% endif %}
+    </div>
+    <div class="col-md-6 main-d">
+      <strong class="my_tag"> <i style="" class="fas fa-user"></i> Username </strong>
+      <p>{{user.username}}</p>
+     <hr style="background-color:darkgreen">
+       <strong class="my_tag"> <i style="" class="fas fa-envelope-open"></i> Email</strong>
+       <p>{{user.email}}</p> <hr style="background-color:darkgreen">
+       <strong class="my_tag"><i style="" class="fas fa-key"></i> Password</strong>
+       <p> *************</p> <a href="#" class="" ><small>Change password</small></a><hr style="background-color:darkgreen">
+      {% if user.bio %}
+      <p>  <strong> <i class="fas fa-info-circle"></i> Bio</strong> <br> {{user.bio}} <a id="bio" href="#"> <br> <small>Edit</small></a></p>
+      <form style="display:none" id="bioForm"class="" action="/profile/save/bio/{{user.id}}" method="post" name ="bio">
+        <label for="">Bio</label>
+          <input type="text"class="form-group form-control" name="bio" value="{{user.bio}}" placeholder="bio">
+          <input type="submit" name="" class="btn btn-outline-success btn-outline-success btn-sm" value="submit">
+      </form>
+      {% else %}
+      <form class="" action="/profile/save/bio/{{user.id}}" method="post" name ="bio">
+        <label for="">Bio</label>
+          <input type="text"class="form-group form-control" name="bio" placeholder="bio">
+          <input type="submit" name="" class="btn btn-outline-success btn-outline-success btn-sm" value="submit">
+      </form>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+</div>
+{% endblock %}

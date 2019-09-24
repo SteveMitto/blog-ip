@@ -23,18 +23,20 @@
   }
   .card{
     padding:20px 10px;
-    border:5px solid #2980b9;
-    border-width:5px .5px;
+    border-width:0px 0px;
     margin:2px;
   }
   .top{
+    border:1px solid #2980b9;
     padding: 0 20px ;
+    backgroung-repeat:no-repeat;
+    background-size:cover;
   }
   .top .col-md-9{
     display:flex;
     align-items:center;
   }
-  .card-body h4{
+  .card-body h5{
     font-weight:lighter;
     margin-bottom:7px;
   }
@@ -42,7 +44,10 @@
     line-height:29px;
     text-align:;
   }
+  .main2{
+    padding:10px;
 
+  }
   .profile-p{
     border-radius:50%;
   }
@@ -62,25 +67,25 @@
 <div class="container ">
   <div class="row ">
     {% for blog in blogs %}
-    <div class="col-md-3 col-lg-4">
+    <div class="col-md-3 col-lg-4 main2">
 
     <div class="card">
-      <div class="row top">
-      <div class="col-md-3">
+      <div class="row top" style="height:200px;background-image:url('{{url_for('static', filename=blog.blog_img)}}')">
+      <div class="col-md-3" style="display:flex;align-items:flex-end;padding:7px;">
         {% if blog.user.profile_photo %}
-        <img src="{{url_for('static' , filename=blog.user.profile_photo)}}"  width="100px" height="100px" alt="">
+        <img src="{{url_for('static' , filename=blog.user.profile_photo)}}"  width="70px" height="70px" alt="">
         {% else %}
-        <img src="{{url_for('static', filename='photos/blog/def-prof.jpg')}}" class="profile-p" width="70px" height="70px" alt="">
+        <img src="{{url_for('static', filename='photos/blog/def-prof.jpg')}}" class="profile-p" width="50px" height="50px" alt="">
         {% endif%}
       </div>
-        <div class="col-md-9 ">
+        <div class="col-md-9" style="display:flex;align-items:flex-end;padding:7px;">
 
-          <h5>{{blog.user.username}}</h5>
+          <h6>{{blog.user.username}}</h6>
         </div>
     </div>
       <div class="card-body">
-        <h4><strong>{{blog.title}}</strong></h4>
-        <p>{{blog.blog_content | truncate(200)}}</p>
+        <h5><strong>{{blog.title}}</strong></h5>
+        <small>{{blog.blog_content | truncate(200)}}</small>
       </div>
       <div class="card-footer">
         {% if blog.upvote.count() != 0 %}
