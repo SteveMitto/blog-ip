@@ -74,7 +74,7 @@
 </div>
   <small><strong>Published on</strong> {{blog.pub_date}}</small><br>
   {% if blog.user.profile_photo %}
-  <img src="{{url_for('static' , filename=blog.user.profile_photo)}}"  width="100px" height="100px" alt="">
+  <img src="{{url_for('static' , filename=blog.user.profile_photo)}}"   class="profile-p" width="50px" height="50px">
   {% else %}
   <img src="{{url_for('static', filename='photos/blog/def-prof.jpg')}}" class="profile-p" width="70px" height="70px" alt="">
   {% endif%}
@@ -124,7 +124,7 @@
     <div class="row" id="comment{{comment.id}}">
       <div class="col-md-2">
         {% if comment.user.profile_photo %}
-        <img src="{{url_for('static' , filename=blog.user.profile_photo)}}"  width="100px" height="100px" alt="">
+        <img src="{{url_for('static' , filename=blog.user.profile_photo)}}" class="profile-p" width="50px" height="50px" alt="">
         {% else %}
         <img src="{{url_for('static', filename='photos/blog/def-prof.jpg')}}" class="profile-p" width="50px" height="50px" alt="">
         {% endif%}
