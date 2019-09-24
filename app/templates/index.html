@@ -4,7 +4,7 @@
 <style media="screen">
   .bg{
     background-image:url("{{url_for('static', filename = 'bg-quote.jpeg')}}");
-    height:50vh;
+    height:70vh;
     background-repeat:no-repeat;
     background-size:cover;
     background-position:center;
@@ -21,6 +21,31 @@
     align-items:center;
     color:white;
   }
+  .card{
+    padding:20px 10px;
+    border:5px solid #2980b9;
+    border-width:5px .5px;
+    margin:2px;
+  }
+  .top{
+    padding: 0 20px ;
+  }
+  .top .col-md-9{
+    display:flex;
+    align-items:center;
+  }
+  .card-body h4{
+    font-weight:lighter;
+    margin-bottom:7px;
+  }
+  .card-body p{
+    line-height:29px;
+    text-align:;
+  }
+
+  .profile-p{
+    border-radius:50%;
+  }
 </style>
 <div class="container-fluid bg">
 <div class="quote">
@@ -32,5 +57,44 @@
   <small><strong>John 3:16</strong></small>
   {% endif %}
 </div>
+</div>
+<br>
+<div class="container ">
+  <div class="row ">
+    {% for blog in blogs %}
+    <div class="col-md-3 col-lg-4">
+
+    <div class="card">
+      <div class="row top">
+      <div class="col-md-3">
+        {% if blog.user.profile_photo %}
+        <img src="{{url_for('static' , filename=blog.user.profile_photo)}}"  width="100px" height="100px" alt="">
+        {% else %}
+        <img src="{{url_for('static', filename='photos/blog/def-prof.jpg')}}" class="profile-p" width="70px" height="70px" alt="">
+        {% endif%}
+      </div>
+        <div class="col-md-9 ">
+
+          <h5>{{blog.user.username}}</h5>
+        </div>
+    </div>
+      <div class="card-body">
+        <h4><strong>{{blog.title}}</strong></h4>
+        <p>{{blog.blog_content | truncate(200)}}</p>
+      </div>
+      <div class="card-footer">
+        {% if blog.upvote.count() != 0 %}
+      <small style="float:right;margin:0 7px" > <i style="color:red" class="fas fa-heart"></i> {{blog.upvote.count()}} likes</small>
+        {% endif %}
+        {% if blog.comment.count() != 0%}
+      <small style="float:right"> <i style="color:blue" class="fas fa-comment">  {{blog.comment.count()}}</i>comments </small>
+        {% endif %}
+        <a href="/blog/{{blog.id}}/details"> <small>see more</small> </a>
+      </div>
+    </div>
+  </div>
+    {% endfor %}
+  </div>
+
 </div>
 {% endblock %}

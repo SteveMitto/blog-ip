@@ -28,13 +28,11 @@ def add_blog():
             return jsonify({'error':'passwords dont match'})
         print("passed")
         blog_img= None
-        try:
-            print(form.get('blog_img'))
-            filename = photos.save(request.files['blog_img'])
-            path = 'photos/blog/{}'.format(filename)
-            blog_img = pathA
-            print(blog_img)
-        except Exception as e:
+        filename = photos.save(request.files['blog-img'])
+        path = 'photos/blog/{}'.format(filename)
+        blog_img = path
+        print(blog_img)
+        if blog_img == None:
             blog_img= 'photos/blog/default.jpeg'
         blog = Blog(title = title, blog_img = blog_img, blog_content = blog_content,user_id =user.id )
         blog.save()
@@ -70,10 +68,11 @@ def delete_comment(comment_id,blog_id):
     if blog.user.id  == user.id:
         comment = Comment.query.filter_by(id = comment_id).first()
         if comment == None:
-            return jsonify({'error':'sorry that comment was already deleted'})
+            return redirect(url_for('blog.blog_details',blog_id = blog_id))
+            # return jsonify({'error':'sorry that comment was already deleted'})
         else:
             comment.delete()
-            return jsonify({'success':'Comment deleted'})
+            # return jsonify({'success':'Comment deleted'})
             return redirect(url_for('blog.blog_details',blog_id = blog_id))
 
     else:
